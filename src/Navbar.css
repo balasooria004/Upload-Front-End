@@ -1,0 +1,29 @@
+.navbar{
+  background-color: rgba(0, 0, 0,0.5);
+}
+
+.Brand{
+  color: antiquewhite;
+}
+
+.nav-link{
+  color:antiquewhite;
+  font-weight:600;
+  cursor: pointer;
+}
+
+.nav-link:hover{
+  color: white;
+}
+
+.navbar-nav {
+  --bs-nav-link-hover-color: white;
+}
+
+.navbar-nav .nav-link.active{
+  color: white;
+}
+
+.logo{
+  width: 120px;
+}
