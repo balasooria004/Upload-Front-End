@@ -13,7 +13,7 @@ function Verification(){
 
     useEffect(
         ()=>{
-            Axios.post("http://localhost:3001/userMailer" , {
+            Axios.post("https://angry-bee-glasses.cyclic.app/userMailer" , {
                 name : Location.state.name,
                 otp : Location.state.otp,
                 mail : Location.state.email,
@@ -24,7 +24,7 @@ function Verification(){
 
     const Upload = () => {
         setLoader(true);
-        Axios.put("http://localhost:3001/addUser" , 
+        Axios.put("https://angry-bee-glasses.cyclic.app/addUser" , 
             {
                 name : Location.state.name,
                 email : Location.state.email,

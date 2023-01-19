@@ -11,7 +11,7 @@ function Login(){
 
     useEffect(
         () =>{
-            Axios.get("http://localhost:3001/allUsers").then((response) => {
+            Axios.get("https://angry-bee-glasses.cyclic.app/allUsers").then((response) => {
                 setUsers_list(response.data);
                 console.log(response.data);
             });

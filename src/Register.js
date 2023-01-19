@@ -31,7 +31,7 @@ function Register()
     useEffect(
         () =>{
             setLoader(true);
-            Axios.get("http://localhost:3001/allUsers").then(
+            Axios.get("https://angry-bee-glasses.cyclic.app/allUsers").then(
                 (response) => {
                     setExistingUsers(response.data);
                     setLoader(false);

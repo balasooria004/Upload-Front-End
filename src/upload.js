@@ -13,7 +13,7 @@ import './Login.css';
 function Upload(){
 
 	const [File , setFile] = useState(null);
-	const [FileUrls , setFileUrls] = useState(null);
+	const [FileUrls , setFileUrls] = useState([]);
 	const [ Loader , setLoader ] = useState(false);
 
 	const [ Stabilize , setStabilize ] = useState(null);
@@ -44,7 +44,7 @@ function Upload(){
 				FileUrls.splice(i,1);
 			}
 		}
-		Axios.put("http://localhost:3001/deleteMe" , {id:Location.state.id , file : FileUrls}).then(()=>{
+		Axios.put("https://angry-bee-glasses.cyclic.app/deleteMe" , {id:Location.state.id , file : FileUrls}).then(()=>{
 			alert("Deleted")
 			setLoader(false);
 		});
@@ -56,8 +56,8 @@ function Upload(){
 		const FileRef = ref(storage , `${Location.state.name}/${File.name}`);
 		uploadBytes(FileRef , File).then((FileData) => {
 			getDownloadURL(FileData.ref).then((url) => {
-				Axios.put("http://localhost:3001/addFile" , {user: Location.state.user , id:Location.state.id , file : url , file_name : FileData.ref.name}).then(() => {
-					Axios.put("http://localhost:3001/getUsers" , {id : Location.state.id}).then((response)=>{
+				Axios.put("https://angry-bee-glasses.cyclic.app/addFile" , {user: Location.state.user , id:Location.state.id , file : url , file_name : FileData.ref.name}).then(() => {
+					Axios.put("https://angry-bee-glasses.cyclic.app/getUsers" , {id : Location.state.id}).then((response)=>{
 						setFileUrls(response.data.Files);
 						setLoader(false);
 					});	
@@ -70,7 +70,7 @@ function Upload(){
 		() =>{
 			if(Location.state !== null){
 				setLoader(true);
-				Axios.put("http://localhost:3001/getUsers" , {id : Location.state.id}).then((response)=>{
+				Axios.put("https://angry-bee-glasses.cyclic.app/getUsers" , {id : Location.state.id}).then((response)=>{
 					setFileUrls(response.data.Files);
 					setLoader(false);
 				})
