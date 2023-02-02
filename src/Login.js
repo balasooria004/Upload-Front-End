@@ -22,19 +22,22 @@ function Login(){
     const [ Users_list , setUsers_list ] = useState([]);
 
     const validate = () => {
+        setLoading(true);
         if(Users_list.length === 0){
+            setLoading(false)
             alert("Invalid Username!!");
         }
         else{
             for(var j = 0 ; j <= Users_list.length ; j++){
                 if( Users_list[j].email.toString() === Username.toString() ){
                     if( Users_list[j].password.toString() === Password.toString() ){
+                        setLoading(false)
                         Navigate('/' , {state:{id:Users_list[j]._id , user:Username , name:Users_list[j].full_name , status:"LoggedIn" , type : "user" }});
                         break;
                     }
-                    else{alert("Invalid Password")}
+                    else{setLoading(false);alert("Invalid Password")}
                 }
-                else if( j === Users_list.length-1 ){alert("Invalid Username!!");}
+                else if( j === Users_list.length-1 ){setLoading(false);alert("Invalid Username!!");}
             }
         }
     };
@@ -50,7 +53,6 @@ function Login(){
                 (Loading)?
                 <div className='loader-main'>
                     <div className="loader"></div>
-                    <p className='loader-text'>Taking You IN...</p>
                 </div>
                 :
                 <div className="overall-log">
