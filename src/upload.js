@@ -90,7 +90,7 @@ function Upload(){
 					{
 						(Location.state === null)?
 						<>
-							<p className='files-label'>Start Your New Way Of Storing File With US.</p>
+							<p className='files-label'>Start Your New Way Of Printing File With US.</p>
 							<Link className="nav-link" to="/Login">Login<i className="fi fi-ss-user end-icons" ></i></Link>
 						</>
 						:
