@@ -14,11 +14,11 @@ function Upload_User(){
 
     useEffect(
         ()=>{
-            console.log("Running");
             Axios.put("https://angry-bee-glasses.cyclic.app/OtpMailer" , {
                 type : "user",
                 otp : Location.state.otp,
                 email : Location.state.email,
+            }).then(()=>{
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
         } , []

@@ -35,9 +35,8 @@ function Verification(){
                 password : Location.state.password,
             }).then(()=>{
                 setLoader(false);
+                Navigate('/Login');
             });
-        alert("User Added");
-        Navigate('/Login');
     };
 
     const check = () => {
@@ -56,7 +55,11 @@ function Verification(){
 
     return(
         <>{
-            (Loader)?<div class="loader"></div>
+            (Loader)?
+            <div className='loader-main'>
+                <div className="loader"></div>
+                <p className='loader-text'>Adding You In...</p>
+            </div>
             :
             <div className="overall-log">
                 <p className="header">Magic Corner</p>

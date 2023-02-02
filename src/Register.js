@@ -14,8 +14,6 @@ function Register()
     const generator = () =>{
         Captcha = Math.floor((Math.random()*9999)+1000);
         OTP = Math.floor((Math.random()*9999)+1000);
-
-        console.log(Captcha,OTP);
     }
 
     const [ Loader , setLoader ] = useState(null);
@@ -79,7 +77,6 @@ function Register()
             (Loader)?
             <div className='loader-main'>
                 <div className="loader"></div>
-                <p className='loader-text'>Getting You In...</p>
             </div>
             :
             <div className='overall-log'>
