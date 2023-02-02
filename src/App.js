@@ -6,6 +6,8 @@ import Login from './Login';
 import Register from './Register';
 import Verification from './Verification';
 import View from './View';
+import ForgotPassword from './PasswordValidator';
+import SendPassword from './PasswordSender';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route path='/Register' element={<Register/>}/>
           <Route path='/Verification' element={<Verification/>}/>
           <Route path='/View' element={<View/>}/>
+          <Route path="/ForgotPassword" element={<ForgotPassword/>}/>
+          <Route path="/SendPassword" element={<SendPassword/>}/>
         </Routes>
       </Router>
     </div>

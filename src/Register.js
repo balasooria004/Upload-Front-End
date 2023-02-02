@@ -76,7 +76,11 @@ function Register()
     }
     return(
         <>{
-            (Loader)?<div class="loader"></div>
+            (Loader)?
+            <div className='loader-main'>
+                <div className="loader"></div>
+                <p className='loader-text'>Getting You In...</p>
+            </div>
             :
             <div className='overall-log'>
                 <p className="header">Upload</p>

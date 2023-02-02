@@ -1,24 +1,31 @@
 import { useState , useEffect } from "react";
 import { useNavigate , Link } from "react-router-dom";
 import Axios from 'axios';
+import './users.css';
 
-import './Login.css';
-
-function Login(){
+function RetrivePassword(){
     const [ Username , setUsername ] = useState (null );
-    const [ Password , setPassword ] = useState( [] );
     const Navigate = useNavigate();
+
+    let Captcha=0
+    let OTP = 0
+
+    const generator = () =>{
+        Captcha = Math.floor((Math.random()*9999)+1000);
+        OTP = Math.floor((Math.random()*9999)+1000);
+
+        console.log(Captcha,OTP);
+    }
 
     useEffect(
         () =>{
             Axios.get("https://angry-bee-glasses.cyclic.app/allUsers").then((response) => {
                 setUsers_list(response.data);
-                console.log(response.data);
             });
         } , []
     );
-    const [ Users_list , setUsers_list ] = useState([]);
 
+    const [ Users_list , setUsers_list ] = useState([]);
     const validate = () => {
         if(Users_list.length === 0){
             alert("Invalid Username!!");
@@ -26,12 +33,9 @@ function Login(){
         else{
             for(var j = 0 ; j <= Users_list.length ; j++){
                 if( Users_list[j].email.toString() === Username.toString() ){
-                    if( Users_list[j].password.toString() === Password.toString() ){
-                        alert("Success");
-                        Navigate('/' , {state:{id:Users_list[j]._id , user:Username , name:Users_list[j].full_name , status:"LoggedIn" , type : "user" }});
-                        break;
-                    }
-                    else{alert("Invalid Password")}
+                    generator()
+                    Navigate("/SendPassword" , {state:{type : "user" , captcha:Captcha , otp:OTP , email : Username}});
+                    break;
                 }
                 else if( j === Users_list.length-1 ){alert("Invalid Username!!");}
             }
@@ -44,8 +48,7 @@ function Login(){
     };
 
     return(
-        <div className="overall-log">
-            <p className="header">Upload</p>
+        <div className="overall-log" id="Home">
             <div className="main-container">
                 <div className="container">
                     <button className="float-start general-button disabled-button" disabled>
@@ -53,7 +56,7 @@ function Login(){
                         <i className="fi fi-ss-user end-icons" ></i>
                     </button>
                     <button className="float-end general-button active-button" 
-                        onClick={()=>{Navigate("/Register");}}>
+                        onClick={()=>{Navigate("/users");}}>
                         REGISTER
                         <i className="fi fi-ss-user-add end-icons"></i>
                     </button>
@@ -67,31 +70,22 @@ function Login(){
                                 className="input-log-attributes w-100"
                                 onChange={(event)=>{setUsername(event.target.value)}}>
                             </input>
-                            <br></br>
-                            <p className="label-log-attributes">
-                                PASSWORD:
-                            </p>
-                            <br></br>
-                            <input type="password" placeholder="Password......" 
-                                className="input-log-attributes w-100"
-                                onChange={(event)=>{setPassword(event.target.value)}}>
-                            </input>
                             <button className="final-button general-button"
                                 onClick={check} type="button">
                                 <p className="final-label">
-                                GET IN
+                                VERIFY
                                 <i className="fi fi-br-angle-right end-icons-err"></i>
                                 </p>
                             </button>
+                            <Link to="/users" className='forgot-password'>Forgot Password ?</Link>
                         </form>
                     </div>
                 </div>
                 <div className="clear"></div>
-                <Link to="/ForgotPassword" className='forgot-password'>Forgot Password ?</Link>
             </div>
             <div className="clear"></div>
         </div>
     );
 }
 
-export default Login;
+export default RetrivePassword;
