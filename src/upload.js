@@ -45,7 +45,6 @@ function Upload(){
 			}
 		}
 		Axios.put("https://angry-bee-glasses.cyclic.app/deleteMe" , {id:Location.state.id , file : FileUrls}).then(()=>{
-			alert("Deleted")
 			setLoader(false);
 		});
 	};
@@ -96,7 +95,6 @@ function Upload(){
 						</>
 						:
 						<>
-						{console.log(FileUrls)}
 							{(FileUrls.length !== 0)?
 							<>
 							<div className='overall'>
