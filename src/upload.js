@@ -49,11 +49,6 @@ function Upload(){
 			setLoader(false);
 		});
 	};
-
-	const print = () =>{
-
-	}
-
 	const upload = () => {
 		setLoader(true);
 		if (File == null) return;
