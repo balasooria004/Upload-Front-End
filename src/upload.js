@@ -123,7 +123,9 @@ function Upload(){
 											<br></br>
 											<input type="file" placeholder="Any Thing..." className='input-log-attributes w-100'
 											onChange={(e) => {setFile(e.target.files[0])}}></input>
-											<button className='general-button final-button col-12' onClick={upload}>UPLOAD
+											<input type="checkbox" className='files-checkbox' onChange={(e)=>{setStabilize(e.target.value)}} value="Stabilize" /><p className='files-p-tag others'>Stabilize</p>
+											<input type="checkbox" className='files-checkbox' onChange={(e)=>{setPunch(e.target.value)}} value="Punch Hole" /><p className='files-p-tag others'>Punch Hole</p>
+											<button className='general-button final-button col-12' onClick={upload}>PRINT
 											<i class="fi fi-rr-upload end-icons"></i></button>
 										</div>
 									</div>
@@ -143,9 +145,7 @@ function Upload(){
 											<br></br>
 											<input type="file" placeholder="Any Thing..." className='input-log-attributes w-100'
 											onChange={(e) => {setFile(e.target.files[0])}}></input>
-											<input type="checkbox" className='files-checkbox' onChange={(e)=>{setStabilize(e.target.value)}} value="Stabilize" /><p className='files-p-tag others'>Stabilize</p>
-											<input type="checkbox" className='files-checkbox' onChange={(e)=>{setPunch(e.target.value)}} value="Punch Hole" /><p className='files-p-tag others'>Punch Hole</p>
-											<button className='general-button final-button col-12' onClick={()=>{run()}}>PRINT
+											<button className='general-button final-button col-12' onClick={()=>{run()}}>UPLOAD
 											<i class="fi fi-rr-upload end-icons"></i></button>
 										</div>
 									</div>
