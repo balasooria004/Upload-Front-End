@@ -44,10 +44,15 @@ function Upload(){
 				FileUrls.splice(i,1);
 			}
 		}
-		Axios.put("https://angry-bee-glasses.cyclic.app/deleteMe" , {id:Location.state.id , file : FileUrls}).then(()=>{
+		Axios.put("http://localhost:3001/deleteMe" , {id:Location.state.id , file : FileUrls}).then(()=>{
+			alert("Deleted")
 			setLoader(false);
 		});
 	};
+
+	const print = () =>{
+
+	}
 
 	const upload = () => {
 		setLoader(true);
@@ -55,8 +60,8 @@ function Upload(){
 		const FileRef = ref(storage , `${Location.state.name}/${File.name}`);
 		uploadBytes(FileRef , File).then((FileData) => {
 			getDownloadURL(FileData.ref).then((url) => {
-				Axios.put("https://angry-bee-glasses.cyclic.app/addFile" , {user: Location.state.user , id:Location.state.id , file : url , file_name : FileData.ref.name}).then(() => {
-					Axios.put("https://angry-bee-glasses.cyclic.app/getUsers" , {id : Location.state.id}).then((response)=>{
+				Axios.put("http://localhost:3001/addFile" , {user: Location.state.user , id:Location.state.id , file : url , file_name : FileData.ref.name}).then(() => {
+					Axios.put("http://localhost:3001/getUsers" , {id : Location.state.id}).then((response)=>{
 						setFileUrls(response.data.Files);
 						setLoader(false);
 					});	
@@ -69,7 +74,7 @@ function Upload(){
 		() =>{
 			if(Location.state !== null){
 				setLoader(true);
-				Axios.put("https://angry-bee-glasses.cyclic.app/getUsers" , {id : Location.state.id}).then((response)=>{
+				Axios.put("http://localhost:3001/getUsers" , {id : Location.state.id}).then((response)=>{
 					setFileUrls(response.data.Files);
 					setLoader(false);
 				})
@@ -90,13 +95,49 @@ function Upload(){
 					{
 						(Location.state === null)?
 						<>
-							<p className='files-label'>Start Your New Way Of Printing File With US.</p>
-							<Link className="nav-link" to="/Login">Login<i className="fi fi-ss-user end-icons" ></i></Link>
+							<p className='files-label'>Login To Start Accessing Your Own Cloud Space.</p>
+							<div className='overall'>
+								<div className='main-container-Main'>
+									<div className='container'>
+										<div className="container sub-container-1 float-start">
+											<p className="label-log-attributes">
+												UPLOAD YOUR FILE:
+											</p>
+											<br></br>
+											<input type="file" placeholder="Any Thing..." className='input-log-attributes w-100'
+											onChange={(e) => {setFile(e.target.files[0])}}></input>
+											<button className='general-button final-button col-12' onClick={upload}>UPLOAD
+											<i class="fi fi-rr-upload end-icons"></i></button>
+										</div>
+									</div>
+									<div className="clear"></div>
+								</div>
+								</div>
 						</>
 						:
 						<>
-							{(FileUrls.length !== 0)?
+							{(FileUrls === [])?
 							<>
+								<div className='overall'>
+								<div className='main-container-Main'>
+									<div className='container'>
+										<div className="container sub-container-1 float-start">
+											<p className="label-log-attributes">
+												UPLOAD YOUR FILE:
+											</p>
+											<br></br>
+											<input type="file" placeholder="Any Thing..." className='input-log-attributes w-100'
+											onChange={(e) => {setFile(e.target.files[0])}}></input>
+											<button className='general-button final-button col-12' onClick={upload}>UPLOAD
+											<i class="fi fi-rr-upload end-icons"></i></button>
+										</div>
+									</div>
+									<div className="clear"></div>
+								</div>
+								</div>
+								<p className='files-label'>No Files Yet</p>
+							</>
+							:
 							<div className='overall'>
 								<div className='main-container-Main w-100'>
 									<div className='container'>
@@ -107,7 +148,9 @@ function Upload(){
 											<br></br>
 											<input type="file" placeholder="Any Thing..." className='input-log-attributes w-100'
 											onChange={(e) => {setFile(e.target.files[0])}}></input>
-											<button className='general-button final-button col-12' onClick={upload}>UPLOAD
+											<input type="checkbox" className='files-checkbox' onChange={(e)=>{setStabilize(e.target.value)}} value="Stabilize" /><p className='files-p-tag others'>Stabilize</p>
+											<input type="checkbox" className='files-checkbox' onChange={(e)=>{setPunch(e.target.value)}} value="Punch Hole" /><p className='files-p-tag others'>Punch Hole</p>
+											<button className='general-button final-button col-12' onClick={()=>{run()}}>PRINT
 											<i class="fi fi-rr-upload end-icons"></i></button>
 										</div>
 									</div>
@@ -142,28 +185,6 @@ function Upload(){
 								}
 								</div>
 								</div>
-							</div>
-							</>
-							:
-							<div>
-							<div className='overall'>
-								<div className='main-container-Main'>
-									<div className='container'>
-										<div className="container sub-container-1 float-start">
-											<p className="label-log-attributes">
-												UPLOAD YOUR FILE:
-											</p>
-											<br></br>
-											<input type="file" placeholder="Any Thing..." className='input-log-attributes w-100'
-											onChange={(e) => {setFile(e.target.files[0])}}></input>
-											<button className='general-button final-button col-12' onClick={upload}>UPLOAD
-											<i class="fi fi-rr-upload end-icons"></i></button>
-										</div>
-									</div>
-									<div className="clear"></div>
-								</div>
-								</div>
-								<p className='files-label'>No Files Yet</p>
 							</div>
 							}
 						</>
