@@ -15,6 +15,8 @@ function Upload(){
 	const [File , setFile] = useState(null);
 	const [FileUrls , setFileUrls] = useState([]);
 	const [ Loader , setLoader ] = useState(false);
+	const [TempFile , setTempFile] = useState(null);
+	const [FileUrls , setFileUrls] = useState([]);
 
 	const [ Stabilize , setStabilize ] = useState(null);
 	const [ Punch , setPunch ] = useState(null);
@@ -101,7 +103,6 @@ function Upload(){
 					{
 						(Location.state === null)?
 						<>
-							<p className='files-label'>Login To Start Accessing Your Own Cloud Space.</p>
 							<div className='overall'>
 								<div className='main-container-Main'>
 									<div className='container'>
@@ -111,11 +112,14 @@ function Upload(){
 											</p>
 											<br></br>
 											<input type="file" placeholder="Any Thing..." className='input-log-attributes w-100'
-											onChange={(e) => {setFile(e.target.files[0])}}></input>
-											<input type="checkbox" className='files-checkbox' onChange={(e)=>{setStabilize(e.target.value)}} value="Stabilize" /><p className='files-p-tag others'>Stabilize</p>
+											onChange={(e) => {uploadTemp(e.target.files[0]);}}></input>
+											{
+												(TempFile!=null)?<>
+												<embed ref={Cref} src={`${TempFile}#toolbar=1&navpanes=0&scrollbar=0`} className='pdf'/>
+												<input type="checkbox" className='files-checkbox' onChange={(e)=>{setStabilize(e.target.value)}} value="Stabilize" /><p className='files-p-tag others'>Stabilize</p>
 											<input type="checkbox" className='files-checkbox' onChange={(e)=>{setPunch(e.target.value)}} value="Punch Hole" /><p className='files-p-tag others'>Punch Hole</p>
-											<button className='general-button final-button col-12' onClick={()=>{verify()}}>PRINT
-											<i class="fi fi-rr-upload end-icons"></i></button>
+												</>:<></>
+											}
 										</div>
 									</div>
 									<div className="clear"></div>
