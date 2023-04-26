@@ -77,6 +77,19 @@ function Upload(){
 			});
 		});
 	};
+	
+	const uploadTemp =(FileTemp)=>{
+		setLoader(true);
+		if (FileTemp == null) {setLoader(false);return;}
+		const FileRef = ref(storage , `Temp/${FileTemp.name}`);
+		uploadBytes(FileRef , FileTemp).then((FileData) => {
+			getDownloadURL(FileData.ref).then((url) => {
+				setTempFile(url);
+				setLoader(false);
+			});
+		});
+	}
+
 
 	useEffect(
 		() =>{
