@@ -1,4 +1,4 @@
-import { useState , useEffect } from 'react';
+import { useState , useEffect , useRef } from 'react';
 import { ref , uploadBytes , getDownloadURL } from 'firebase/storage';
 import { storage } from './firebase';
 import { useLocation , Link } from 'react-router-dom';
@@ -13,40 +13,45 @@ import './Login.css';
 function Upload(){
 
 	const [File , setFile] = useState(null);
-	const [FileUrls , setFileUrls] = useState([]);
-	const [ Loader , setLoader ] = useState(false);
+	const [FileTemp , setFileTemp] = useState(null);
 	const [TempFile , setTempFile] = useState(null);
 	const [FileUrls , setFileUrls] = useState([]);
+	const [ Loader , setLoader ] = useState(false);
 
 	const [ Stabilize , setStabilize ] = useState(null);
 	const [ Punch , setPunch ] = useState(null);
 
 	const Location = useLocation();
+	const Cref = useRef(null);
 
 	const verify = () =>{
 		if(File === null){
 			alert("No File Uploaded")
 		}
 		else{
-			run()
 		}
 	}
 
-	const run = () =>{
-		if( Punch!=null && Stabilize!= null){
-			alert("Printing Stabilized and Punched Pages!");
+	/*const run = useReactToPrint({
+		content:()=>Cref.current,
+		onPrintError:()=>{console.log("Error")},
+		documentTitle:"Sample",
+		onAfterPrint:()=>{
+			if( Punch!=null && Stabilize!= null){
+				alert("Printing Stabilized and Punched Pages!");
+			}
+			else if(Punch!=null){
+				alert("Printing Punched Pages!");
+			}
+			else if(Stabilize!=null){
+				alert("Printing Stabilized Pages!");
+			}
+			else{
+				alert("Printing Standard Pages!");
+			}
 		}
-		else if(Punch!=null){
-			alert("Printing Punched Pages!");
-		}
-		else if(Stabilize!=null){
-			alert("Printing Stabilized Pages!");
-		}
-		else{
-			alert("Printing Standard Pages!");
-		}
+	})*/
 
-	}
 
 	const Delete = (file) => {
 		setLoader(true);
@@ -55,7 +60,7 @@ function Upload(){
 				FileUrls.splice(i,1);
 			}
 		}
-		Axios.put("http://localhost:3001/deleteMe" , {id:Location.state.id , file : FileUrls}).then(()=>{
+		Axios.put("https://angry-bee-glasses.cyclic.app/deleteMe" , {id:Location.state.id , file : FileUrls}).then(()=>{
 			alert("Deleted")
 			setLoader(false);
 		});
@@ -68,8 +73,8 @@ function Upload(){
 		const FileRef = ref(storage , `${Location.state.name}/${File.name}`);
 		uploadBytes(FileRef , File).then((FileData) => {
 			getDownloadURL(FileData.ref).then((url) => {
-				Axios.put("http://localhost:3001/addFile" , {user: Location.state.user , id:Location.state.id , file : url , file_name : FileData.ref.name}).then(() => {
-					Axios.put("http://localhost:3001/getUsers" , {id : Location.state.id}).then((response)=>{
+				Axios.put("https://angry-bee-glasses.cyclic.app/addFile" , {user: Location.state.user , id:Location.state.id , file : url , file_name : FileData.ref.name}).then(() => {
+					Axios.put("https://angry-bee-glasses.cyclic.app/getUsers" , {id : Location.state.id}).then((response)=>{
 						setFileUrls(response.data.Files);
 						setLoader(false);
 					});	
@@ -77,7 +82,7 @@ function Upload(){
 			});
 		});
 	};
-	
+
 	const uploadTemp =(FileTemp)=>{
 		setLoader(true);
 		if (FileTemp == null) {setLoader(false);return;}
@@ -90,12 +95,11 @@ function Upload(){
 		});
 	}
 
-
 	useEffect(
 		() =>{
 			if(Location.state !== null){
 				setLoader(true);
-				Axios.put("http://localhost:3001/getUsers" , {id : Location.state.id}).then((response)=>{
+				Axios.put("https://angry-bee-glasses.cyclic.app/getUsers" , {id : Location.state.id}).then((response)=>{
 					setFileUrls(response.data.Files);
 					setLoader(false);
 				})
@@ -116,6 +120,7 @@ function Upload(){
 					{
 						(Location.state === null)?
 						<>
+							
 							<div className='overall'>
 								<div className='main-container-Main'>
 									<div className='container'>
@@ -192,8 +197,8 @@ function Upload(){
 											<div className='container w-50 options'>
 												<a className='files-a-tag-view' target="blank" href={`${url.url}#toolbar=0`} ><p className='files-p-tag'>VIEW</p>
 												<i class="fi fi-bs-eye end-icons"></i></a>
-												<Link className='files-a-tag-print' target="_blank" to="/View" onClick={()=>{run()}}><p className='files-p-tag'>PRINT</p>
-												<i class="fi fi-rr-print end-icons"></i></Link><br className='br'/>
+												<a className='files-a-tag-print' target="_blank" href={`${url.url}#toolbar=1`}><p className='files-p-tag'>PRINT</p>
+												<i class="fi fi-rr-print end-icons"></i></a><br className='br'/>
 												<input type="checkbox" className='files-checkbox' onChange={(e)=>{setStabilize(e.target.value)}} value="Stabilize" /><p className='files-p-tag others'>Stabilize</p>
 												<input type="checkbox" className='files-checkbox' onChange={(e)=>{setPunch(e.target.value)}} value="Punch Hole" /><p className='files-p-tag others'>Punch Hole</p>
 												<button className='general-button delete' onClick={() => {
